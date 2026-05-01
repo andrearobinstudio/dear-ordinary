@@ -134,6 +134,6 @@ The curriculum is grounded in the *Path to Good* star chart, a scholarly framewo
 
 ---
 
-*No cult. No surprise. Just the constant journey toward.*
 
-*Andrea Robin Studio · path-to-good*
+
+
