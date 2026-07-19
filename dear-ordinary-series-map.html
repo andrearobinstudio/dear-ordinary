@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dear Ordinary — the series map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff;
+    --ink:#5d5a5b;
+    --accent:#a29f9f;
+    --muted:#6f6b6c;
+    --line:#e7e4e4;
+    --surface:#f7f6f5;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Asap",system-ui,sans-serif;font-weight:400;line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:4rem 1.5rem 5rem;}
+
+  .eyebrow{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 1rem;}
+  h1{font-size:clamp(1.7rem,4.5vw,2.2rem);font-weight:600;line-height:1.15;margin:0 0 .85rem;letter-spacing:-.01em;color:var(--ink);}
+  .lede{font-size:1.05rem;margin:0 0 0;max-width:54ch;color:var(--ink);}
+
+  .meta{margin:1.5rem 0 0;padding:1.2rem 0 0;border-top:1px solid var(--line);}
+  .meta p{margin:0 0 .55rem;font-size:.9rem;color:var(--muted);}
+  .meta p:last-child{margin-bottom:0;}
+  .meta b{color:var(--ink);font-weight:600;}
+  .arc{font-style:italic;}
+
+  .controls{margin:2rem 0 0;}
+  .toggle-all{
+    font:inherit;font-size:.8rem;font-weight:500;letter-spacing:.02em;
+    color:var(--ink);background:none;border:1px solid var(--line);
+    border-radius:999px;padding:.35rem .9rem;cursor:pointer;
+  }
+  .toggle-all:hover{border-color:var(--accent);}
+  .toggle-all:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
+
+  .phase{margin:2.6rem 0 0;}
+  .phase-head{margin:0 0 .3rem;}
+  .phase-eyebrow{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:600;}
+  .phase-title{font-size:1.2rem;font-weight:600;margin:.2rem 0 .25rem;color:var(--ink);}
+  .phase-goal{font-size:.9rem;color:var(--muted);margin:0;font-style:italic;}
+
+  .constellation{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;
+    margin:1.25rem 0 .1rem;padding-bottom:.3rem;border-bottom:1px solid var(--line);}
+
+  .weeks{position:relative;list-style:none;margin:1rem 0 0;padding:0;}
+  .weeks::before{content:"";position:absolute;left:7px;top:18px;bottom:18px;width:2px;background:var(--accent);opacity:.5;}
+  .week{position:relative;}
+
+  .wbtn{
+    display:grid;grid-template-columns:1fr auto;align-items:center;gap:1rem;
+    width:100%;text-align:left;background:none;border:0;
+    border-bottom:1px solid var(--line);
+    padding:.95rem .25rem .95rem 30px;cursor:pointer;color:var(--ink);font:inherit;
+  }
+  .wbtn:hover .wtitle{color:var(--muted);}
+  .wbtn:focus-visible{outline:2px solid var(--ink);outline-offset:-2px;border-radius:4px;}
+  .wnode{
+    position:absolute;left:1px;top:1.25rem;width:14px;height:14px;border-radius:50%;
+    background:var(--bg);border:2px solid var(--accent);transition:background .2s,border-color .2s;
+  }
+  .week[data-open="true"] .wnode{background:var(--accent);}
+  .wnum{display:block;font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;font-weight:600;}
+  .wtitle{font-size:1.04rem;font-weight:500;color:var(--ink);transition:color .15s;}
+  .wchev{font-size:1.4rem;line-height:1;color:var(--accent);font-weight:400;width:1rem;text-align:center;}
+
+  .panel{padding:.5rem .25rem 1.3rem 30px;}
+  .panel[hidden]{display:none;}
+  .facet{margin:0 0 .7rem;}
+  .facet:last-child{margin-bottom:0;}
+  .flabel{display:block;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:.2rem;}
+  .facet p{margin:0;font-size:.96rem;line-height:1.55;color:var(--ink);max-width:58ch;}
+
+  @keyframes reveal{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:none;}}
+  .panel:not([hidden]){animation:reveal .26s ease;}
+  @media (prefers-reduced-motion:reduce){.panel:not([hidden]){animation:none;}.wnode{transition:none;}}
+
+  footer{margin:3.5rem 0 0;padding:1.4rem 0 0;border-top:1px solid var(--line);font-size:.85rem;color:var(--muted);}
+  footer a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line);}
+  footer a:hover{border-color:var(--accent);}
+
+  .noscript{margin:2rem 0;padding:1rem 1.2rem;background:var(--surface);border-radius:8px;font-size:.9rem;color:var(--ink);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Andrea Robin Studio · Path to Good</p>
+    <h1>Dear Ordinary — the series map</h1>
+    <p class="lede">A 56-week path through queering contemplative spirituality, arranged as eight constellations of stars. Open any week to see the star it navigates by and the territory it explores.</p>
+    <div class="meta">
+      <p class="arc">Each week draws one star into three movements — grounding, ethics, and emergence — and closes with an invitation into the studio.</p>
+      <p><b>Eight constellations of equal standing</b> · thirty-five stars · no fixed sequence.</p>
+    </div>
+  </header>
+
+  <div class="controls">
+    <button class="toggle-all" id="toggleAll" aria-pressed="false">Expand all</button>
+  </div>
+
+  <noscript>
+    <p class="noscript">This map is interactive — please enable JavaScript to open each week. A linear, screen-reader-friendly version is available on request.</p>
+  </noscript>
+
+  <main id="series" aria-label="Dear Ordinary, 56 weeks across eight phases"></main>
+
+  <footer>
+    <p>Dear Ordinary is published by Andrea Robin Studio · <a href="https://andrearobinstudio.github.io/path-to-good">the Path to Good star chart</a></p>
+  </footer>
+</div>
+
+<script>
+const PHASES = [
+  {
+    n:1, name:"The Body's Wisdom", range:"Weeks 1–7",
+    goal:"Begin in the body — the biological ground of awareness, safety, and the metabolizing of trauma.",
+    groups:[
+      { label:"", weeks:[
+        {n:1, title:"Sensing the body from within", focus:"Interoception — the brain's reading of its own internal state — as the biological root of self-awareness and empathy."},
+        {n:2, title:"The nervous system as navigator", focus:"Polyvagal theory's three autonomic states, and safety as a physiological condition rather than a feeling."},
+        {n:3, title:"Window of tolerance", focus:"The range of arousal within which integration is possible, and how somatic practice widens it over time."},
+        {n:4, title:"Trauma metabolized", focus:"Trauma as an incomplete biological response held in the body — and a return that runs through the body, not around it."},
+        {n:5, title:"The difficult side of practice", focus:"The documented risks of contemplative practice, and why trauma-sensitive care is a starting condition, not an afterthought."},
+        {n:6, title:"Contemplative neuroscience", focus:"Measurable structural change from sustained practice, where contemplative tradition and neuroscience meet."},
+        {n:7, title:"Recognition, not acquisition", focus:"Integration of the Body's Wisdom: the journey as recognition of what is already present, with threads to all eight constellations."}
+      ]}
+    ]
+  },
+  {
+    n:2, name:"The Hearthstone", range:"Weeks 8–14",
+    goal:"Set the North Star of self-compassion, learn the ordinary cycle of rupture and repair, then cross into what cannot be said.",
+    groups:[
+      { label:"", weeks:[
+        {n:8, title:"Self-compassion as ground", focus:"Self-kindness, common humanity, and mindfulness as the North Star — the ground you navigate from, not toward."},
+        {n:9, title:"Rupture", focus:"Disconnection as an ordinary feature of every close relationship, registered by the body as threat — not a moral failure."},
+        {n:10, title:"Repair", focus:"Security as the reliable experience of return after rupture, rather than the absence of rupture."},
+        {n:11, title:"The human in you is the human in me", focus:"Common humanity against the isolation of shame, where Neff's research and Buber's I-Thou meet."},
+        {n:12, title:"Recognition", focus:"Integration of the Hearthstone: the exile's discovery that the margin was the centre of something all along."}
+      ]},
+      { label:"The Mystical Thread", weeks:[
+        {n:13, title:"The via negativa", focus:"Knowing the sacred through what cannot be said — a rigorous honesty that resists every fixed definition."},
+        {n:14, title:"Kenosis — self-emptying", focus:"Self-emptying reread as freely chosen strength from abundance, not the submission demanded of those already without power."}
+      ]}
+    ]
+  },
+  {
+    n:3, name:"The Mystical Thread", range:"Weeks 15–21",
+    goal:"Follow knowing through unknowing — non-dual awareness and discernment — and turn the thread outward toward justice.",
+    groups:[
+      { label:"", weeks:[
+        {n:15, title:"Non-dual awareness", focus:"Awareness prior to the subject-object split — not a state to achieve but what precedes the grasping."},
+        {n:16, title:"Discernment", focus:"The practised capacity to sense what is life-giving from what is not — often forged in survival."},
+        {n:17, title:"Cross-traditional encounter", focus:"What passes recognisably between traditions, and cannot be owned by any one of them."}
+      ]},
+      { label:"The Engaged Path", weeks:[
+        {n:18, title:"Liberation theology", focus:"The sacred located in the bodies of the marginalised — actually, not symbolically."},
+        {n:19, title:"Engaged practice", focus:"Inner and outer transformation as one movement; contemplation that turns toward justice."},
+        {n:20, title:"Permission surrendered", focus:"Goodness as granted by no institution — and naming the system as the first act of liberation."},
+        {n:21, title:"One movement, two names", focus:"Integration across the Mystical Thread and the Engaged Path: two names for a single movement."}
+      ]}
+    ]
+  },
+  {
+    n:4, name:"The Engaged Path", range:"Weeks 22–28",
+    goal:"Meet Earth as theological partner, and enter grief and the dark night as sacred work.",
+    groups:[
+      { label:"The Wide Waters", weeks:[
+        {n:22, title:"Earth as theological partner", focus:"Life arising through symbiosis, and the single refusal that links the domination of Earth with the domination of marginalised bodies."},
+        {n:23, title:"Interbeing", focus:"The radical interdependence of all things — no separate self to be saved or lost alone."},
+        {n:24, title:"The mystery held openly", focus:"Remaining in uncertainty without reaching for false resolution — the apophatic and the scientific arriving together."},
+        {n:25, title:"Purpose as love expressed", focus:"Meaning found through the stance taken toward suffering; the wounded healer as love finding form."}
+      ]},
+      { label:"The Dark Night", weeks:[
+        {n:26, title:"Grief as sacred work", focus:"Grief as the body completing its response to loss — and, in womanist theology, as politically necessary."},
+        {n:27, title:"The dark night of the soul", focus:"The dark night not as pathology but as the dissolution of what cannot survive the encounter with love."},
+        {n:28, title:"Non-extractive love", focus:"Love that asks no return — and the receiving that must precede the giving."}
+      ]}
+    ]
+  },
+  {
+    n:5, name:"The Wide Waters", range:"Weeks 29–35",
+    goal:"Name systemic injury and exile honestly, and reclaim the body and identity as contemplative sites.",
+    groups:[
+      { label:"The Queer Path", weeks:[
+        {n:29, title:"Naming systemic injury", focus:"The harm systems of power leave in the body, named as systemic rather than personal — where the path begins."},
+        {n:30, title:"Exile as contemplative location", focus:"The wilderness of exile as where the divine is most honestly met, and where the margin becomes the centre."},
+        {n:31, title:"The body as theological site", focus:"The particular, marked, desiring body as the site and medium of contemplative life, not an obstacle to it."},
+        {n:32, title:"Gender-plural traditions", focus:"Traditions that have held gender plurality as sacred for millennia — ancient wisdom, not modern invention."},
+        {n:33, title:"Queer mysticism", focus:"The mystics' erotic language exceeding institutional containment — often queerer than the institutions that kept it."},
+        {n:34, title:"Identity integration", focus:"Integration not as erasing the wound but as discovering it has been generative; affirming community as protective."},
+        {n:35, title:"Refusing every fixed map", focus:"Integration of the Queer Path: the curriculum's commitment to resisting every fixed map."}
+      ]}
+    ]
+  },
+  {
+    n:6, name:"The Wide Waters / The Making", range:"Weeks 36–42",
+    goal:"Join the ecological and the contemplative, then take up making itself as a form of prayer and presence.",
+    groups:[
+      { label:"The Wide Waters", weeks:[
+        {n:36, title:"Interbeing — synthesis", focus:"The ecological crisis and the spiritual crisis as one crisis, asking the same healing."}
+      ]},
+      { label:"The Making", weeks:[
+        {n:37, title:"Making as praying", focus:"What distinguishes contemplative art practice: the quality of attention, not the medium or the product."},
+        {n:38, title:"The pre-verbal path", focus:"Art-making reaching experience stored in image and sensation, beyond the reach of language."},
+        {n:39, title:"Flow as contemplative state", focus:"Absorbed, unhurried making as a form of nervous-system health that leaves the maker more present."},
+        {n:40, title:"Making together as sacred assembly", focus:"Communal making as being together in the presence of something larger than any individual will."},
+        {n:41, title:"Process over product", focus:"The rough first draft as contemplative practice, and liberation from skill anxiety as one of art's gifts."},
+        {n:42, title:"Authentic movement and somatic art", focus:"Movement as a direct route to what the body holds before the mind has language for it."}
+      ]}
+    ]
+  },
+  {
+    n:7, name:"The Making — Deep Practice", range:"Weeks 43–49",
+    goal:"Hold the whole sky at once, and let the art practice and the thesis enact the same inquiry.",
+    groups:[
+      { label:"", weeks:[
+        {n:43, title:"The sky, not the sequence", focus:"The curriculum held as a sky moved through in all directions at once, rather than a fixed order."},
+        {n:44, title:"Hypothesis as practice", focus:"The thesis enacting the inquiry it describes, rather than reporting on it from outside."},
+        {n:45, title:"Making and writing as parallel inquiries", focus:"The art practice enacting the same hypothesis as the writing, through different materials."},
+        {n:46, title:"The Celtic thread", focus:"A Celtic contemplative sensibility's gift: attention to threshold, to seasonal rhythm, and to what crosses between worlds."},
+        {n:47, title:"Return to the body", focus:"Returning to the Body's Wisdom after forty-seven weeks as deepening, not repetition."},
+        {n:48, title:"Art practice as thesis enactment", focus:"The visual work not as evidence for the thesis but as the thesis practising itself."},
+        {n:49, title:"Integration — the practised claim", focus:"Forty-nine weeks of practising what the hypothesis claims, held as the deepest form of evidence."}
+      ]}
+    ]
+  },
+  {
+    n:8, name:"Synthesis", range:"Weeks 50–56",
+    goal:"Build the thesis from the archive, and arrive where the question stays genuinely alive.",
+    groups:[
+      { label:"", weeks:[
+        {n:50, title:"Literature as argument", focus:"The literature review as an argument made from the archive, not a neutral survey."},
+        {n:51, title:"Methodology as honesty", focus:"The methodology as where the thesis tells the truth about how it knows what it claims."},
+        {n:52, title:"Synthesis and argument", focus:"The claim not that the answer is found, but that a practice keeps the question genuinely alive."},
+        {n:53, title:"The visual work as evidence", focus:"What the art practice found that the writing could not say, held as part of the findings."},
+        {n:54, title:"References as conversation", focus:"The bibliography as the map of the conversation the thesis entered."},
+        {n:55, title:"Finished and unfinished", focus:"The genuinely finished thesis as also genuinely unfinished — the acknowledgment that begins the next inquiry."},
+        {n:56, title:"Already made of it", focus:"The closing return: you are already made of what you thought you were seeking — true across all fifty-six weeks."}
+      ]}
+    ]
+  }
+];
+
+const series = document.getElementById('series');
+let idc = 0;
+
+function makeWeek(w, ol){
+  const id = 'panel-' + (++idc);
+  const li = document.createElement('li');
+  li.className = 'week';
+
+  const btn = document.createElement('button');
+  btn.className = 'wbtn';
+  btn.setAttribute('aria-expanded', 'false');
+  btn.setAttribute('aria-controls', id);
+  btn.innerHTML =
+    '<span class="wnode" aria-hidden="true"></span>' +
+    '<span><span class="wnum">Week ' + w.n + '</span>' +
+    '<span class="wtitle">' + w.title + '</span></span>' +
+    '<span class="wchev" aria-hidden="true">+</span>';
+
+  const panel = document.createElement('div');
+  panel.className = 'panel';
+  panel.id = id;
+  panel.hidden = true;
+  panel.innerHTML =
+    '<div class="facet"><span class="flabel">The territory</span><p>' + w.focus + '</p></div>';
+
+  btn.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    setWeek(btn, panel, li, !open);
+    syncToggleAll();
+  });
+
+  li.appendChild(btn);
+  li.appendChild(panel);
+  ol.appendChild(li);
+}
+
+PHASES.forEach(phase => {
+  const sec = document.createElement('section');
+  sec.className = 'phase';
+
+  const head = document.createElement('div');
+  head.className = 'phase-head';
+  head.innerHTML =
+    '<p class="phase-eyebrow">Phase ' + phase.n + ' · ' + phase.range + '</p>' +
+    '<h2 class="phase-title">' + phase.name + '</h2>' +
+    '<p class="phase-goal">' + phase.goal + '</p>';
+  sec.appendChild(head);
+
+  phase.groups.forEach(g => {
+    if (g.label){
+      const cl = document.createElement('p');
+      cl.className = 'constellation';
+      cl.textContent = g.label;
+      sec.appendChild(cl);
+    }
+    const ol = document.createElement('ol');
+    ol.className = 'weeks';
+    g.weeks.forEach(w => makeWeek(w, ol));
+    sec.appendChild(ol);
+  });
+
+  series.appendChild(sec);
+});
+
+function setWeek(btn, panel, li, open){
+  btn.setAttribute('aria-expanded', String(open));
+  panel.hidden = !open;
+  li.setAttribute('data-open', String(open));
+  btn.querySelector('.wchev').textContent = open ? '\u2212' : '+';
+}
+
+const toggleAllBtn = document.getElementById('toggleAll');
+function allButtons(){ return Array.from(document.querySelectorAll('.wbtn')); }
+function syncToggleAll(){
+  const anyClosed = allButtons().some(b => b.getAttribute('aria-expanded') !== 'true');
+  toggleAllBtn.textContent = anyClosed ? 'Expand all' : 'Collapse all';
+  toggleAllBtn.setAttribute('aria-pressed', String(!anyClosed));
+}
+toggleAllBtn.addEventListener('click', () => {
+  const expand = toggleAllBtn.textContent === 'Expand all';
+  allButtons().forEach(b => {
+    const panel = document.getElementById(b.getAttribute('aria-controls'));
+    setWeek(b, panel, b.closest('.week'), expand);
+  });
+  syncToggleAll();
+});
+</script>
+</body>
+</html>
